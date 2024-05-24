@@ -1,0 +1,44 @@
+[
+    {
+        "name": "test-pack",
+        "version": {
+            "major": 0,
+            "minor": 1,
+            "patch": 0
+        },
+        "dependencies": [
+            {
+                "name": "add",
+                "version": {
+                    "major": 0,
+                    "minor": 1,
+                    "patch": 0
+                }
+            },
+            {
+                "name": "sub",
+                "version": {
+                    "major": 0,
+                    "minor": 1,
+                    "patch": 0
+                }
+            },
+            {
+                "name": "mul",
+                "version": {
+                    "major": 0,
+                    "minor": 1,
+                    "patch": 0
+                }
+            },
+            {
+                "name": "div",
+                "version": {
+                    "major": 0,
+                    "minor": 1,
+                    "patch": 0
+                }
+            }
+        ]
+    }
+]

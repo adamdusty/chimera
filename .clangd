@@ -1,0 +1,4 @@
+CompileFlags:
+    Add: [-D__cpp_concepts=202002L]
+    Remove:
+        -fno-keep-inline-dllexport

@@ -1,0 +1,10 @@
+{
+    "namespace": "chimera",
+    "name": "sub",
+    "executable": "libsub.dll",
+    "version": {
+        "major": 0,
+        "minor": 1,
+        "patch": 0
+    }
+}
