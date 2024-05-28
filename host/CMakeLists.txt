@@ -17,6 +17,8 @@ target_sources(host_lib PRIVATE
     src/plugins.cpp
     "$<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/src/libloading/windows.cpp>"
     "$<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_SOURCE_DIR}/src/libloading/linux.cpp>"
+    "$<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/src/utils/windows.cpp>"
+    "$<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_SOURCE_DIR}/src/utils/linux.cpp>"
 )
 
 
