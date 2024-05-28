@@ -4,7 +4,6 @@
 #include <vector>
 
 #include <chimera/sdk.hpp>
-#include <windows.h>
 
 #include "libloading.hpp"
 #include "plugins.hpp"
@@ -45,16 +44,16 @@ auto main() -> int {
     //     proc(ctx);
     // }
 
-    auto buf = std::array<char, MAX_PATH>{};
-    GetModuleFileName(nullptr, buf.data(), buf.size());
+    // auto buf = std::array<char, MAX_PATH>{};
+    // GetModuleFileName(nullptr, buf.data(), buf.size());
 
-    auto path = std::filesystem::path(buf.data()).parent_path();
+    // auto path = std::filesystem::path(buf.data()).parent_path();
 
-    auto manifests = chimera::find_available_plugins(path / "plugins");
+    // auto manifests = chimera::find_available_plugins(path / "plugins");
 
-    for(const auto& m: manifests) {
-        std::cerr << std::format("{}:{}", m.nspace, m.name) << '\n';
-    }
+    // for(const auto& m: manifests) {
+    //     std::cerr << std::format("{}:{}", m.nspace, m.name) << '\n';
+    // }
 
     return 0;
 }

@@ -25,5 +25,5 @@ TEST_CASE("Plugin manifest from_json", "[plugin_manifest::from_json]") {
     CHECK(result->nspace == "chimera");
     CHECK(result->name == "add");
     CHECK(result->executable == "libadd.dll");
-    CHECK(result->version == version{0, 1, 0});
+    CHECK(result->plugin_version == version{0, 1, 0});
 }

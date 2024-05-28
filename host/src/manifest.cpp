@@ -31,7 +31,7 @@ auto plugin_manifest::from_json(const std::string_view str) -> std::expected<plu
         .nspace     = json_data.at("namespace"),
         .name       = json_data.at("name"),
         .executable = json_data.at("executable"),
-        .version =
+        .plugin_version =
             {
                 json_data.at("version").at("major"),
                 json_data.at("version").at("minor"),
