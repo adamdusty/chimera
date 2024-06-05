@@ -11,6 +11,13 @@
 
 using execute_proc = void (*)(const chimera::context&);
 
+/*
+    - Function to read all plugin manifests and return available plugins
+    - Function to load available plugins
+    - Functionality to enable/disable plugins
+    -
+*/
+
 auto main() -> int {
     auto plugin_dir = chimera::get_executable_dir() / "plugins";
     auto paths      = std::vector<std::filesystem::path>{
@@ -46,16 +53,14 @@ auto main() -> int {
         proc(ctx);
     }
 
-    // auto buf = std::array<char, MAX_PATH>{};
-    // GetModuleFileName(nullptr, buf.data(), buf.size());
-
-    // auto path = std::filesystem::path(buf.data()).parent_path();
-
     // auto manifests = chimera::find_available_plugins(path / "plugins");
 
     // for(const auto& m: manifests) {
     //     std::cerr << std::format("{}:{}", m.nspace, m.name) << '\n';
     // }
 
+    for(auto* lib: libs) {
+        dlclose(lib);
+    }
     return 0;
 }
