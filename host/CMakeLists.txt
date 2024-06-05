@@ -13,10 +13,10 @@ add_library(host_lib OBJECT)
 target_link_libraries(host_lib PUBLIC chimera::sdk nlohmann_json::nlohmann_json)
 
 target_sources(host_lib PRIVATE
-    src/manifest.cpp
-    src/plugins.cpp
-    "$<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/src/libloading/windows.cpp>"
-    "$<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_SOURCE_DIR}/src/libloading/linux.cpp>"
+    src/pack.cpp
+    src/plugin.cpp
+    "$<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/src/library/windows.cpp>"
+    "$<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_SOURCE_DIR}/src/library/linux.cpp>"
     "$<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/src/utils/windows.cpp>"
     "$<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_SOURCE_DIR}/src/utils/linux.cpp>"
 )

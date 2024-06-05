@@ -1,7 +1,7 @@
 {
     "namespace": "chimera",
     "name": "add",
-    "executable": "libadd.dll",
+    "executable": "libadd",
     "version": {
         "major": 0,
         "minor": 1,

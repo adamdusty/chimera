@@ -1,7 +1,7 @@
 {
     "namespace": "chimera",
     "name": "mul",
-    "executable": "libmul.dll",
+    "executable": "libmul",
     "version": {
         "major": 0,
         "minor": 1,

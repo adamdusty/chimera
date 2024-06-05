@@ -1,7 +1,7 @@
 {
     "namespace": "chimera",
     "name": "div",
-    "executable": "libdiv.dll",
+    "executable": "libdiv",
     "version": {
         "major": 0,
         "minor": 1,

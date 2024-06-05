@@ -1,66 +1,52 @@
 #include <filesystem>
+#include <format>
 #include <iostream>
-#include <vector>
+#include <unordered_map>
 
-#include "utils.hpp"
 #include <chimera/sdk.hpp>
 
-#include "libloading.hpp"
-
-#include <dlfcn.h>
+#include "library.hpp"
+#include "plugin.hpp"
+#include "utils.hpp"
 
 using execute_proc = void (*)(const chimera::context&);
 
 /*
-    - Function to read all plugin manifests and return available plugins
-    - Function to load available plugins
-    - Functionality to enable/disable plugins
-    -
+    - Get available plugin manifests
+    - Get available pack manifests
 */
 
 auto main() -> int {
-    auto plugin_dir = chimera::get_executable_dir() / "plugins";
-    auto paths      = std::vector<std::filesystem::path>{
-        "add/libadd.so",
-        "sub/libsub.so",
-        "mul/libmul.so",
-        "div/libdiv.so",
-    };
+    auto exe_dir    = chimera::get_executable_dir();
+    auto pack_dir   = exe_dir / "packs";
+    auto plugin_dir = exe_dir / "plugins";
 
-    auto libs = std::vector<library>();
-    for(const auto& path: paths) {
-        auto lib = chimera::load_library(plugin_dir / path);
-        if(lib) {
-            libs.emplace_back(*lib);
-        } else {
-            std::cerr << "Error loading library at path: " << path << '\n';
-            std::cerr << lib.error() << '\n';
+    std::cerr << exe_dir.string() << '\n';
+    std::cerr << pack_dir.string() << '\n';
+    std::cerr << plugin_dir.string() << '\n';
+
+    auto plugin_manifests = chimera::search_for_plugin_manifests(plugin_dir);
+
+    auto plugins = std::unordered_map<std::string, chimera::library>{};
+    for(const auto& man: plugin_manifests) {
+        auto this_plugin_dir = std::format(
+            "{}-{}-{}.{}.{}",
+            man.nspace,
+            man.name,
+            man.plugin_version.major,
+            man.plugin_version.minor,
+            man.plugin_version.patch
+        );
+        auto path = plugin_dir / this_plugin_dir / std::format("{}{}", man.executable_name, chimera::plugin_file_ext);
+        std::cerr << "PLUGIN: " << path.string() << '\n';
+        if(auto lib = chimera::load_library(path)) {
+            plugins[std::format("{}:{}", man.nspace, man.name)] = std::move(*lib);
         }
     }
 
-    auto execute_procs = std::vector<execute_proc>();
-    for(auto* lib: libs) {
-        auto proc = reinterpret_cast<execute_proc>(dlsym(lib, "execute"));
-        if(proc == nullptr) {
-            std::cerr << "Error getting execute procedure" << '\n';
-        } else {
-            execute_procs.emplace_back(proc);
-        }
+    for(const auto& [name, _]: plugins) {
+        std::cerr << name << '\n';
     }
 
-    auto ctx = chimera::context(64, 8);
-    for(auto proc: execute_procs) {
-        proc(ctx);
-    }
-
-    // auto manifests = chimera::find_available_plugins(path / "plugins");
-
-    // for(const auto& m: manifests) {
-    //     std::cerr << std::format("{}:{}", m.nspace, m.name) << '\n';
-    // }
-
-    for(auto* lib: libs) {
-        dlclose(lib);
-    }
     return 0;
 }

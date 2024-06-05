@@ -10,6 +10,6 @@ add_subdirectory(plugins/mul)
 add_subdirectory(plugins/div)
 
 file(
-    COPY ${CMAKE_CURRENT_SOURCE_DIR}/manifest.json
-    DESTINATION ${INTEGRATION_BINARY_DIR}
+    COPY ${CMAKE_CURRENT_SOURCE_DIR}/pack.json
+    DESTINATION ${INTEGRATION_BINARY_DIR}/packs
 )
