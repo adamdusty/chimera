@@ -1,7 +1,7 @@
 #include <filesystem>
 #include <format>
 #include <iostream>
-#include <unordered_map>
+#include <vector>
 
 #include <chimera/sdk.hpp>
 
@@ -14,6 +14,9 @@ using execute_proc = void (*)(const chimera::context&);
 /*
     - Get available plugin manifests
     - Get available pack manifests
+    - Plugin management
+    - Plugin function pointer loading
+    - Execution loop
 */
 
 auto main() -> int {
@@ -21,31 +24,18 @@ auto main() -> int {
     auto pack_dir   = exe_dir / "packs";
     auto plugin_dir = exe_dir / "plugins";
 
-    std::cerr << exe_dir.string() << '\n';
-    std::cerr << pack_dir.string() << '\n';
-    std::cerr << plugin_dir.string() << '\n';
-
     auto plugin_manifests = chimera::search_for_plugin_manifests(plugin_dir);
 
-    auto plugins = std::unordered_map<std::string, chimera::library>{};
+    auto plugins = std::vector<chimera::library>{};
     for(const auto& man: plugin_manifests) {
-        auto this_plugin_dir = std::format(
-            "{}-{}-{}.{}.{}",
-            man.nspace,
-            man.name,
-            man.plugin_version.major,
-            man.plugin_version.minor,
-            man.plugin_version.patch
-        );
-        auto path = plugin_dir / this_plugin_dir / std::format("{}{}", man.executable_name, chimera::plugin_file_ext);
-        std::cerr << "PLUGIN: " << path.string() << '\n';
+        auto path = chimera::get_plugin_executable_path(plugin_dir, man);
         if(auto lib = chimera::load_library(path)) {
-            plugins[std::format("{}:{}", man.nspace, man.name)] = std::move(*lib);
+            plugins.emplace_back(std::move(*lib));
         }
     }
 
-    for(const auto& [name, _]: plugins) {
-        std::cerr << name << '\n';
+    for(const auto& lib: plugins) {
+        std::cerr << lib << '\n';
     }
 
     return 0;

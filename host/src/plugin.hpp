@@ -1,10 +1,11 @@
 #pragma once
 
-#include "version.hpp"
 #include <expected>
 #include <filesystem>
 #include <string>
 #include <vector>
+
+#include "version.hpp"
 
 namespace chimera {
 
@@ -26,5 +27,10 @@ struct plugin_manifest {
 };
 
 auto search_for_plugin_manifests(const std::filesystem::path& plugin_dir) -> std::vector<plugin_manifest>;
+
+struct plugin_data {
+    // Idea is to keep all the plugin data (enabled, name, version, etc.) in a struct attached to
+    // the plugin ptr via a map or something.
+};
 
 } // namespace chimera

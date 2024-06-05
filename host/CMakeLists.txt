@@ -15,6 +15,7 @@ target_link_libraries(host_lib PUBLIC chimera::sdk nlohmann_json::nlohmann_json)
 target_sources(host_lib PRIVATE
     src/pack.cpp
     src/plugin.cpp
+    src/utils/utils.cpp
     "$<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/src/library/windows.cpp>"
     "$<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_SOURCE_DIR}/src/library/linux.cpp>"
     "$<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/src/utils/windows.cpp>"
