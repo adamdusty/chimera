@@ -1,15 +1,11 @@
 #include <filesystem>
-#include <format>
 #include <iostream>
 #include <vector>
 
 #include <chimera/sdk.hpp>
 
-#include "library.hpp"
 #include "plugin.hpp"
 #include "utils.hpp"
-
-using execute_proc = void (*)(const chimera::context&);
 
 /*
     - Get available plugin manifests
@@ -26,16 +22,20 @@ auto main() -> int {
 
     auto plugin_manifests = chimera::search_for_plugin_manifests(plugin_dir);
 
-    auto plugins = std::vector<chimera::library>{};
-    for(const auto& man: plugin_manifests) {
-        auto path = chimera::get_plugin_executable_path(plugin_dir, man);
-        if(auto lib = chimera::load_library(path)) {
-            plugins.emplace_back(std::move(*lib));
+    auto plugins = std::vector<chimera::plugin>();
+    for(const auto& dir: std::filesystem::directory_iterator(plugin_dir)) {
+        auto plugin_res = chimera::load_plugin(dir);
+        if(!plugin_res) {
+            std::cerr << plugin_res.error() << '\n';
         }
+        plugins.emplace_back(std::move(*plugin_res));
     }
 
-    for(const auto& lib: plugins) {
-        std::cerr << lib << '\n';
+    auto ctx = chimera::context{.a = 64, .b = 8};
+    for(const auto& plg: plugins) {
+        std::cerr << plg.manifest.nspace << ':' << plg.manifest.name << '\n';
+        plg.on_load(ctx);
+        plg.execute(ctx);
     }
 
     return 0;

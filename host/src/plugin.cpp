@@ -1,9 +1,10 @@
 #include "plugin.hpp"
 
-#include "serialization.hpp"
-
 #include <fstream>
 #include <nlohmann/json.hpp>
+
+#include "serialization.hpp"
+#include "utils.hpp"
 
 namespace fs = std::filesystem;
 using json   = nlohmann::json;
@@ -50,6 +51,52 @@ auto search_for_plugin_manifests(const std::filesystem::path& plugin_dir) -> std
     }
 
     return manifests;
+}
+
+auto load_plugin(const std::filesystem::path& dir) -> std::expected<plugin, std::string_view> {
+    if(!fs::exists(dir) || !fs::is_directory(dir)) {
+        return std::unexpected("Path invalid");
+    }
+
+    if(!fs::exists(dir / "plugin.json")) {
+        return std::unexpected("Manifest file `plugin.json` does not exist");
+    }
+
+    auto manifest_file = std::ifstream(dir / "plugin.json");
+    if(!manifest_file) {
+        return std::unexpected("Unable to open manifest file");
+    }
+
+    auto manifest_stream = std::stringstream();
+    manifest_stream << manifest_file.rdbuf();
+
+    auto manifest_res = plugin_manifest::from_json(manifest_stream.str());
+    if(!manifest_res) {
+        return std::unexpected(manifest_res.error());
+    }
+
+    auto bin_path = get_plugin_executable_path(dir.parent_path(), *manifest_res);
+    auto lib_res  = load_library(bin_path);
+    if(!lib_res) {
+        return std::unexpected(lib_res.error());
+    }
+
+    auto load_proc    = get_on_load_proc(lib_res->get());
+    auto execute_proc = get_execute_proc(lib_res->get());
+    auto unload_proc  = get_on_unload_proc(lib_res->get());
+
+    if(!load_proc || !execute_proc || !unload_proc) {
+        return std::unexpected("Unable to get procedure from library");
+    }
+
+    return plugin{
+        .manifest  = *manifest_res,
+        .handle    = std::move(*lib_res),
+        .enabled   = false,
+        .on_load   = *load_proc,
+        .execute   = *execute_proc,
+        .on_unload = *unload_proc,
+    };
 }
 
 } // namespace chimera

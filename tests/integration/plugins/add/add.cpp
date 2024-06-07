@@ -1,10 +1,12 @@
 #include "add.hpp"
 
+#include <format>
 #include <iostream>
 
 extern "C" {
-auto load() -> void {
+auto load(const chimera::context& ctx) -> void {
     std::cerr << "Loading addition plugin..." << '\n';
+    std::cerr << std::format("Context values (a, b): ({}, {})\n", ctx.a, ctx.b);
 }
 
 auto execute(const chimera::context& ctx) -> void {
@@ -12,7 +14,7 @@ auto execute(const chimera::context& ctx) -> void {
     std::cerr << chimera::add::add(ctx.a, ctx.b) << '\n';
 }
 
-auto unload() -> void {}
+auto unload(const chimera::context& ctx) -> void {}
 }
 
 namespace chimera::add {

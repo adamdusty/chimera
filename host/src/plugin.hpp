@@ -1,10 +1,12 @@
 #pragma once
 
+#include <chimera/sdk.hpp>
 #include <expected>
 #include <filesystem>
 #include <string>
 #include <vector>
 
+#include "library.hpp"
 #include "version.hpp"
 
 namespace chimera {
@@ -28,9 +30,18 @@ struct plugin_manifest {
 
 auto search_for_plugin_manifests(const std::filesystem::path& plugin_dir) -> std::vector<plugin_manifest>;
 
-struct plugin_data {
-    // Idea is to keep all the plugin data (enabled, name, version, etc.) in a struct attached to
-    // the plugin ptr via a map or something.
+struct plugin {
+    plugin_manifest manifest;
+    library handle = nullptr;
+    bool enabled   = false;
+
+    on_load_proc on_load     = nullptr;
+    execute_proc execute     = nullptr;
+    on_unload_proc on_unload = nullptr;
 };
+
+// Loads plugin at `dir`
+// Directory must contain a plugin.json which will read to fill plugin manifest
+auto load_plugin(const std::filesystem::path& dir) -> std::expected<plugin, std::string_view>;
 
 } // namespace chimera
