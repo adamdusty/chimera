@@ -3,16 +3,16 @@
 #include <iostream>
 
 extern "C" {
-auto load() -> void {
+auto load(const chimera::context& ctx) -> void {
     std::cerr << "Loading division plugin..." << '\n';
 }
 
 auto execute(const chimera::context& ctx) -> void {
-    std::cerr << "Division:\n";
-    std::cerr << chimera::div::div(ctx.a, ctx.b) << '\n';
+    // std::cerr << "Division:\n";
+    // std::cerr << chimera::div::div(ctx.a, ctx.b) << '\n';
 }
 
-auto unload() -> void {}
+auto unload(const chimera::context& ctx) -> void {}
 }
 
 namespace chimera::div {

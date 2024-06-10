@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 
+#include <chimera/flecs.h>
 #include <chimera/sdk.hpp>
 
 #include "plugin.hpp"
@@ -31,10 +32,13 @@ auto main() -> int {
         plugins.emplace_back(std::move(*plugin_res));
     }
 
-    auto ctx = chimera::context{.a = 64, .b = 8};
+    auto ctx = chimera::context{.world = flecs::world()};
+
     for(const auto& plg: plugins) {
-        std::cerr << plg.manifest.nspace << ':' << plg.manifest.name << '\n';
         plg.on_load(ctx);
+    }
+
+    for(const auto& plg: plugins) {
         plg.execute(ctx);
     }
 

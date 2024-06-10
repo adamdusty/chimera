@@ -3,16 +3,16 @@
 #include <iostream>
 
 extern "C" {
-auto load() -> void {
+auto load(const chimera::context& ctx) -> void {
     std::cerr << "Loading multiplication plugin..." << '\n';
 }
 
 auto execute(const chimera::context& ctx) -> void {
-    std::cerr << "Multiplication:\n";
-    std::cerr << chimera::mul::mul(ctx.a, ctx.b) << '\n';
+    // std::cerr << "Multiplication:\n";
+    // std::cerr << chimera::mul::mul(ctx.a, ctx.b) << '\n';
 }
 
-auto unload() -> void {}
+auto unload(const chimera::context& ctx) -> void {}
 }
 
 namespace chimera::mul {

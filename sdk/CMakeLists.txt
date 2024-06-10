@@ -29,6 +29,7 @@ generate_export_header(
 # Add sources
 target_sources(chimera_sdk PRIVATE
     src/sdk.cpp
+    src/flecs/flecs.c
 )
 
 # Add include directory
@@ -44,10 +45,11 @@ target_include_directories(chimera_sdk
 )
 
 # Include and link dependencies
-#target_link_libraries(chimera_sdk)
+# target_link_libraries(chimera_sdk PUBLIC flecs::flecs_static)
 
 # Add compile options
 add_dev_compile_opts(chimera_sdk)
+target_compile_definitions(chimera_sdk PUBLIC flecs_EXPORTS)
 
 
 # Set properties

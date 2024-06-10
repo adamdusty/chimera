@@ -3,9 +3,9 @@
 #include <chimera/sdk.hpp>
 
 extern "C" {
-auto load() -> void;
+auto load(const chimera::context& ctx) -> void;
 auto execute(const chimera::context& ctx) -> void;
-auto unload() -> void;
+auto unload(const chimera::context& ctx) -> void;
 }
 
 namespace chimera::div {
