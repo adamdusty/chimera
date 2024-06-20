@@ -3,9 +3,7 @@
 #include <iostream>
 
 extern "C" {
-auto load(const chimera::context& ctx) -> void {
-    std::cerr << "Loading multiplication plugin..." << '\n';
-}
+auto load(const chimera::context& ctx) -> void {}
 
 auto execute(const chimera::context& ctx) -> void {
     // std::cerr << "Multiplication:\n";

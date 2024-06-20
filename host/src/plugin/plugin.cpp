@@ -1,4 +1,4 @@
-#include "plugin.hpp"
+#include "plugin/plugin.hpp"
 
 #include <fstream>
 #include <nlohmann/json.hpp>
@@ -53,30 +53,12 @@ auto search_for_plugin_manifests(const std::filesystem::path& plugin_dir) -> std
     return manifests;
 }
 
-auto load_plugin(const std::filesystem::path& dir) -> std::expected<plugin, std::string_view> {
-    if(!fs::exists(dir) || !fs::is_directory(dir)) {
-        return std::unexpected("Path invalid");
+auto load_plugin(const std::filesystem::path& plugin_path) -> std::expected<plugin, std::string_view> {
+    if(!fs::exists(plugin_path)) {
+        return std::unexpected("No executable at path");
     }
 
-    if(!fs::exists(dir / "plugin.json")) {
-        return std::unexpected("Manifest file `plugin.json` does not exist");
-    }
-
-    auto manifest_file = std::ifstream(dir / "plugin.json");
-    if(!manifest_file) {
-        return std::unexpected("Unable to open manifest file");
-    }
-
-    auto manifest_stream = std::stringstream();
-    manifest_stream << manifest_file.rdbuf();
-
-    auto manifest_res = plugin_manifest::from_json(manifest_stream.str());
-    if(!manifest_res) {
-        return std::unexpected(manifest_res.error());
-    }
-
-    auto bin_path = get_plugin_executable_path(dir.parent_path(), *manifest_res);
-    auto lib_res  = load_library(bin_path);
+    auto lib_res = load_library(plugin_path);
     if(!lib_res) {
         return std::unexpected(lib_res.error());
     }
@@ -90,7 +72,7 @@ auto load_plugin(const std::filesystem::path& dir) -> std::expected<plugin, std:
     }
 
     return plugin{
-        .manifest  = *manifest_res,
+        .manifest  = {},
         .handle    = std::move(*lib_res),
         .enabled   = false,
         .on_load   = *load_proc,

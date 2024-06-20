@@ -5,7 +5,6 @@
 
 extern "C" {
 auto load(const chimera::context& ctx) -> void {
-    std::cerr << "Loading addition plugin..." << '\n';
     // std::cerr << std::format("Context values (a, b): ({}, {})\n", ctx.a, ctx.b);
 }
 

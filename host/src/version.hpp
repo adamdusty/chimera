@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cstdint>
+#include <filesystem>
+#include <format>
 
 namespace chimera {
 
@@ -11,5 +13,9 @@ struct version {
 
     constexpr auto operator<=>(const version&) const -> bool = default;
 };
+
+inline auto operator/(const std::filesystem::path& p, const version& v) -> std::filesystem::path {
+    return p / std::format("{}.{}.{}", v.major, v.minor, v.patch);
+}
 
 } // namespace chimera

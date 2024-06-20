@@ -13,20 +13,29 @@ set(INTEGRATION_BINARY_DIR ${PROJECT_BINARY_DIR}/integration)
 add_custom_command(TARGET integration_tests POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/plugins
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/packs
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/plugins/chimera-add-0.1.0
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/plugins/chimera-sub-0.1.0
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/plugins/chimera-mul-0.1.0
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/plugins/chimera-div-0.1.0
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/plugins/other_namespace
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/plugins/chimera/add/0.1.0
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/plugins/chimera/sub/0.1.0
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/plugins/chimera/mul/0.1.0
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${INTEGRATION_BINARY_DIR}/plugins/chimera/div/0.1.0
 
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:chimera_host> ${INTEGRATION_BINARY_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:chimera_sdk> ${INTEGRATION_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:chimera_add> ${INTEGRATION_BINARY_DIR}/plugins/chimera-add-0.1.0
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE_DIR:chimera_add>/plugin.json" ${INTEGRATION_BINARY_DIR}/plugins/chimera-add-0.1.0
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:chimera_sub> ${INTEGRATION_BINARY_DIR}/plugins/chimera-sub-0.1.0
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE_DIR:chimera_sub>/plugin.json" ${INTEGRATION_BINARY_DIR}/plugins/chimera-sub-0.1.0
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:chimera_mul> ${INTEGRATION_BINARY_DIR}/plugins/chimera-mul-0.1.0
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE_DIR:chimera_mul>/plugin.json" ${INTEGRATION_BINARY_DIR}/plugins/chimera-mul-0.1.0
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:chimera_div> ${INTEGRATION_BINARY_DIR}/plugins/chimera-div-0.1.0
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE_DIR:chimera_div>/plugin.json" ${INTEGRATION_BINARY_DIR}/plugins/chimera-div-0.1.0
+
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:chimera_add> ${INTEGRATION_BINARY_DIR}/plugins/chimera/add/0.1.0
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<TARGET_FILE_DIR:chimera_add>/plugin.json" ${INTEGRATION_BINARY_DIR}/plugins/chimera/add/0.1.0
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:chimera_sub> ${INTEGRATION_BINARY_DIR}/plugins/chimera/sub/0.1.0
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<TARGET_FILE_DIR:chimera_sub>/plugin.json" ${INTEGRATION_BINARY_DIR}/plugins/chimera/sub/0.1.0
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:chimera_mul> ${INTEGRATION_BINARY_DIR}/plugins/chimera/mul/0.1.0
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<TARGET_FILE_DIR:chimera_mul>/plugin.json" ${INTEGRATION_BINARY_DIR}/plugins/chimera/mul/0.1.0
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:chimera_div> ${INTEGRATION_BINARY_DIR}/plugins/chimera/div/0.1.0
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<TARGET_FILE_DIR:chimera_div>/plugin.json" ${INTEGRATION_BINARY_DIR}/plugins/chimera/div/0.1.0
 )
