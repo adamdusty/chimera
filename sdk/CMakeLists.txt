@@ -39,13 +39,13 @@ target_include_directories(chimera_sdk ${warning_guard}
         "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
 )
 
-target_include_directories(chimera_sdk
+target_include_directories(chimera_sdk SYSTEM
     PUBLIC
         "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>"
 )
 
 # Include and link dependencies
-# target_link_libraries(chimera_sdk PUBLIC flecs::flecs_static)
+target_link_libraries(chimera_sdk PUBLIC SDL3::SDL3)
 
 # Add compile options
 add_dev_compile_opts(chimera_sdk)

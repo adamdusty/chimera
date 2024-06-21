@@ -1,10 +1,10 @@
-# include(FetchContent)
+include(FetchContent)
 
-# FetchContent_Declare(
-#     flecs
-#     GIT_REPOSITORY https://github.com/SanderMertens/flecs.git
-#     GIT_TAG        37233f127d5006ceb0087fbfcd2f3e36f5b77a23
-#     SYSTEM
-# )
+FetchContent_Declare(
+    sdl3
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+    GIT_TAG        6e53a364141d6f5e95bfd805982a9b137bd5463d # main 6/20/24
+    SYSTEM
+)
 
-# FetchContent_MakeAvailable(flecs)
+FetchContent_MakeAvailable(sdl3)
