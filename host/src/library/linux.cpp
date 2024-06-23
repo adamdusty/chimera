@@ -19,6 +19,7 @@ auto library_deleter::operator()(library_type* lib) -> void {
         dlclose(lib);
     }
 }
+
 auto get_on_load_proc(library_type* lib) -> std::expected<on_load_proc, std::string_view> {
     auto* proc = dlsym(lib, "load");
     if(proc == nullptr) {

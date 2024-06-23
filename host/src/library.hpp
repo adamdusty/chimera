@@ -8,14 +8,12 @@
 namespace chimera {
 
 #if defined(__WIN32) && __WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-using library_type     = HINSTANCE;
 constexpr auto LIB_EXT = "dll";
 #elif defined(__linux__) && __linux__
-using library_type     = void;
 constexpr auto LIB_EXT = "so";
 #endif
+
+using library_type = void;
 
 using on_load_proc   = void (*)(const chimera::context& ctx);
 using execute_proc   = void (*)(const chimera::context& ctx);

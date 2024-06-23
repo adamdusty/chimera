@@ -4,7 +4,6 @@ project(
     chimera_sdk
     VERSION 0.1.0
     DESCRIPTION "A short description"
-    LANGUAGES CXX
 )
 
 # Include utilities
@@ -45,7 +44,7 @@ target_include_directories(chimera_sdk SYSTEM
 )
 
 # Include and link dependencies
-target_link_libraries(chimera_sdk PUBLIC SDL3::SDL3)
+target_link_libraries(chimera_sdk PUBLIC SDL3::SDL3 ws2_32)
 
 # Add compile options
 add_dev_compile_opts(chimera_sdk)
