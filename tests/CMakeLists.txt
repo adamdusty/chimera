@@ -6,10 +6,10 @@ project(
 )
 
 # If test project is built independently, find the project package
-if(PROJECT_IS_TOP_LEVEL)
-    find_package(chimerasdk REQUIRED)
-    enable_testing()
-endif()
+# if(PROJECT_IS_TOP_LEVEL)
+#     find_package(chimerasdk REQUIRED)
+#     enable_testing()
+# endif()
 
 # Get the testing library
 include(FetchContent)
@@ -31,7 +31,7 @@ target_sources(chimera_tests PRIVATE
 )
 
 # Link libs
-target_link_libraries(chimera_tests PRIVATE host_lib chimera::sdk snitch::snitch)
+target_link_libraries(chimera_tests PUBLIC host_lib chimera::sdk snitch::snitch)
 
 # Add test
 add_test(NAME chimera_tests COMMAND chimera_tests)

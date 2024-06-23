@@ -21,13 +21,14 @@ include(GenerateExportHeader)
 generate_export_header(
     chimera_sdk
     BASE_NAME chimera
-    EXPORT_FILE_NAME include/chimera/export.hpp
+    EXPORT_FILE_NAME include/chimera/sdk/export.hpp
     CUSTOM_CONTENT_FROM_VARIABLE pragma_suppress_c4251
 )
 
 # Add sources
 target_sources(chimera_sdk PRIVATE
     src/sdk.cpp
+    src/window.cpp
     src/flecs/flecs.c
 )
 
@@ -44,7 +45,11 @@ target_include_directories(chimera_sdk SYSTEM
 )
 
 # Include and link dependencies
-target_link_libraries(chimera_sdk PUBLIC SDL3::SDL3 ws2_32)
+target_link_libraries(chimera_sdk
+    PUBLIC
+        $<$<PLATFORM_ID:Windows>:ws2_32>
+        SDL3::SDL3
+)
 
 # Add compile options
 add_dev_compile_opts(chimera_sdk)

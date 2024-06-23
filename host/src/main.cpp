@@ -41,29 +41,11 @@ auto main() -> int {
         plg.execute(context);
     }
 
-    auto* window = SDL_CreateWindow("hello world", 1920, 1080, SDL_WINDOW_VULKAN);
-    auto* rend   = SDL_CreateRenderer(window, nullptr);
+    auto desc   = chimera::window_desc{};
+    auto win    = chimera::window::create(desc);
+    auto [w, h] = win->size();
 
-    SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
+    std::cout << "WIDTH: " << w << '\n';
 
-    bool quit = false;
-    while(!quit) {
-        SDL_Event e;
-        while(SDL_PollEvent(&e) != SDL_FALSE) {
-            switch(e.type) {
-            case SDL_EVENT_KEY_DOWN:
-                if(e.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
-                    quit = true;
-                }
-            default:
-                break;
-            }
-        }
-
-        SDL_RenderClear(rend);
-        SDL_RenderPresent(rend);
-    }
-
-    SDL_DestroyWindow(window);
     return 0;
 }
