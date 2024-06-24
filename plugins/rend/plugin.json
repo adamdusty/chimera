@@ -1,0 +1,10 @@
+{
+    "namespace": "chimera",
+    "name": "rend",
+    "executable": "rend",
+    "version": {
+        "major": 0,
+        "minor": 1,
+        "patch": 0
+    }
+}

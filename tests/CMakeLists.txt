@@ -28,10 +28,11 @@ add_executable(chimera_tests)
 target_sources(chimera_tests PRIVATE
     sdk/tests.cpp
     host/tests.cpp
+    rend/tests.cpp
 )
 
 # Link libs
-target_link_libraries(chimera_tests PUBLIC host_lib chimera::sdk snitch::snitch)
+target_link_libraries(chimera_tests PUBLIC host_lib chimera::sdk chimera::rend snitch::snitch)
 
 # Add test
 add_test(NAME chimera_tests COMMAND chimera_tests)

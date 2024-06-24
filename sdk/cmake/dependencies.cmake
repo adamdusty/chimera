@@ -7,4 +7,11 @@ FetchContent_Declare(
     SYSTEM
 )
 
-FetchContent_MakeAvailable(sdl3)
+FetchContent_Declare(
+    spdlog
+    GIT_REPOSITORY https://github.com/gabime/spdlog.git
+    GIT_TAG        v1.14.1
+    SYSTEM
+)
+
+FetchContent_MakeAvailable(sdl3 spdlog)

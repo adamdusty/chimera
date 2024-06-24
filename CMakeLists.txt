@@ -5,6 +5,10 @@ project(chimera)
 add_subdirectory(sdk)
 add_subdirectory(host)
 
+add_subdirectory(plugins/rend)
+
+include(cmake/package.cmake)
+
 if(BUILD_TESTING)
     include(cmake/integration.cmake)
     include(CTest)
