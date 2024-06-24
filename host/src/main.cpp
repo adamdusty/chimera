@@ -6,6 +6,7 @@
 
 #include <chimera/flecs.h>
 #include <chimera/sdk.hpp>
+#include <spdlog/spdlog.h>
 
 #include "plugin.hpp"
 #include "utils.hpp"
@@ -41,11 +42,11 @@ auto main() -> int {
         plg.execute(context);
     }
 
-    auto desc   = chimera::window_desc{};
-    auto win    = chimera::window::create(desc);
-    auto [w, h] = win->size();
+    auto desc = chimera::window_desc{};
+    auto win  = chimera::window::create(desc);
 
-    std::cout << "WIDTH: " << w << '\n';
+    spdlog::set_level(spdlog::level::info);
+    spdlog::info("Starting...");
 
     return 0;
 }

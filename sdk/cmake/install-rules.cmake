@@ -11,7 +11,7 @@ include(CMakePackageConfigHelpers)
 
 # Set up export components
 install(
-    TARGETS chimera_sdk SDL3-shared SDL3_Headers
+    TARGETS chimera_sdk SDL3-shared SDL3_Headers spdlog
     EXPORT sdkTargets
     RUNTIME COMPONENT sdk_Runtime
     LIBRARY COMPONENT sdk_Runtime

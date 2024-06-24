@@ -1,6 +1,7 @@
 set windows-shell := ["pwsh.exe", "-NoLogo", "-NoProfileLoadTime", "-Command"]
 
 alias i := integration
+alias p := package
 
 configure:
     cmake --preset dev -G Ninja
@@ -16,3 +17,6 @@ clean:
 
 integration:
     build/dev/integration/chimera
+
+package:
+    build/dev/package/chimera

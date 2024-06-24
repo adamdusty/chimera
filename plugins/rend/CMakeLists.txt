@@ -54,8 +54,7 @@ set_target_properties(
     chimera_rend PROPERTIES
     CXX_VISIBILITY_PRESET "hidden"
     VISIBILITY_INLINES_HIDDEN YES
-    VERSION "${PROJECT_VERSION}"
-    SOVERSION "${PROJECT_VERSION_MAJOR}"
+    PREFIX ""
     EXPORT_NAME rend
     OUTPUT_NAME rend
 )

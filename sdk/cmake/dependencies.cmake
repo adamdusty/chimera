@@ -7,6 +7,7 @@ FetchContent_Declare(
     SYSTEM
 )
 
+set(SPDLOG_BUILD_SHARED ON)
 FetchContent_Declare(
     spdlog
     GIT_REPOSITORY https://github.com/gabime/spdlog.git
