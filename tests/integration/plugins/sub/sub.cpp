@@ -5,7 +5,7 @@
 flecs::system sys;
 
 extern "C" {
-auto load(const chimera::context& ctx) -> void {
+auto load(const chimera::sdk::context& ctx) -> void {
     flecs::log::warn("Loading subtraction");
     auto entity = ctx.world.entity();
     entity.set<chimera::sub::subtraction_comp>({64, 8});
@@ -18,11 +18,11 @@ auto load(const chimera::context& ctx) -> void {
     });
 }
 
-auto execute(const chimera::context& /* ctx */) -> void {
+auto execute(const chimera::sdk::context& /* ctx */) -> void {
     sys.run();
 }
 
-auto unload(const chimera::context& ctx) -> void {
+auto unload(const chimera::sdk::context& ctx) -> void {
     // auto entity = ctx.world.entity("sub");
     // entity.destruct();
 }

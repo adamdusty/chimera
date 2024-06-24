@@ -1,12 +1,13 @@
 #include "chimera/window.hpp"
 
-namespace chimera {
+namespace chimera::sdk {
 
-auto window::size() const -> std::pair<int32_t, int32_t> {
-    auto size = std::pair<int32_t, int32_t>();
-    SDL_GetWindowSize(this->handle.get(), &size.first, &size.second);
+auto window::size() const -> std::pair<uint32_t, uint32_t> {
+    int w = 0;
+    int h = 0;
+    SDL_GetWindowSize(this->handle.get(), &w, &h);
 
-    return size;
+    return {w, h};
 }
 
-} // namespace chimera
+} // namespace chimera::sdk

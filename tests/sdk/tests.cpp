@@ -1,16 +1,18 @@
 #include <chimera/sdk.hpp>
 #include <snitch/snitch.hpp>
 
+using namespace chimera;
+
 TEST_CASE("Window creation") {
-    auto desc       = chimera::window_desc{};
-    auto window_res = chimera::window::create(desc);
+    auto desc       = sdk::window_desc{};
+    auto window_res = sdk::window::create(desc);
 
     CHECK(window_res.has_value());
 }
 
 TEST_CASE("Window size") {
-    auto desc       = chimera::window_desc{};
-    auto window_res = chimera::window::create(desc);
+    auto desc       = sdk::window_desc{};
+    auto window_res = sdk::window::create(desc);
 
     REQUIRE(window_res);
 

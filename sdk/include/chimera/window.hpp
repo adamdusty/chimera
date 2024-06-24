@@ -9,7 +9,7 @@
 
 #include <chimera/sdk/export.hpp>
 
-namespace chimera {
+namespace chimera::sdk {
 
 enum class window_flags : std::uint64_t {
     none               = 0,
@@ -53,7 +53,7 @@ constexpr auto sdl_window_deleter = [](SDL_Window* win) {
 struct CHIMERA_EXPORT window {
     std::unique_ptr<SDL_Window, decltype(sdl_window_deleter)> handle;
 
-    auto size() const -> std::pair<int32_t, int32_t>;
+    auto size() const -> std::pair<uint32_t, uint32_t>;
 
     static auto create(const window_desc& desc) -> std::expected<window, std::string> {
         auto* window_handle =
@@ -69,4 +69,4 @@ struct CHIMERA_EXPORT window {
     }
 };
 
-} // namespace chimera
+} // namespace chimera::sdk

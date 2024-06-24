@@ -15,9 +15,9 @@ constexpr auto LIB_EXT = "so";
 
 using library_type = void;
 
-using on_load_proc   = void (*)(const chimera::context& ctx);
-using execute_proc   = void (*)(const chimera::context& ctx);
-using on_unload_proc = void (*)(const chimera::context& ctx);
+using on_load_proc   = void (*)(const sdk::context& ctx);
+using execute_proc   = void (*)(const sdk::context& ctx);
+using on_unload_proc = void (*)(const sdk::context& ctx);
 
 struct library_deleter {
     auto operator()(library_type* lib) -> void;

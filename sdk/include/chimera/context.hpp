@@ -4,10 +4,10 @@
 
 #include "chimera/export.hpp"
 
-namespace chimera {
+namespace chimera::sdk {
 
 struct CHIMERA_EXPORT context {
     flecs::world world;
 };
 
-} // namespace chimera
+} // namespace chimera::sdk

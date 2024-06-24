@@ -1,7 +1,14 @@
 #include <rend/rend.hpp>
 #include <snitch/snitch.hpp>
 
-TEST_CASE("init") {
+using namespace chimera;
 
-    CHECK(1 == 1);
+TEST_CASE("Context creation") {
+    auto desc   = sdk::window_desc{};
+    auto window = sdk::window::create(desc);
+    REQUIRE(window);
+
+    auto rnd_ctx = rend::render_context::create(*window);
+
+    REQUIRE(rnd_ctx);
 }

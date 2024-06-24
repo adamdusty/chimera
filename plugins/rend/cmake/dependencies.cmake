@@ -9,3 +9,8 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(echidna)
+
+set_target_properties(echidna_echidna
+    PROPERTIES
+        POSITION_INDEPENDENT_CODE ON
+)
