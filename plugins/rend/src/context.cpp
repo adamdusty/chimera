@@ -9,43 +9,26 @@
 
 namespace chimera::rend {
 
-auto surface_descriptor_from_window(const sdk::window& window)
-    -> std::expected<echidna::surface_descriptor_t, std::string> {
-#if defined(SDL_PLATFORM_WIN32)
-#error Unimplemented
-#elif defined(SDL_PLATFORM_LINUX)
-    if(SDL_strcmp(SDL_GetCurrentVideoDriver(), "x11") == 0) {
-        auto* xdisplay =
-            SDL_GetProperty(SDL_GetWindowProperties(window.handle.get()), SDL_PROP_WINDOW_X11_DISPLAY_POINTER, nullptr);
-        auto xwindow =
-            SDL_GetNumberProperty(SDL_GetWindowProperties(window.handle.get()), SDL_PROP_WINDOW_X11_WINDOW_NUMBER, 0);
-        if(xdisplay != nullptr && xwindow != 0) {
-            auto plat_desc =
-                echidna::surface_descriptor_from_xlib_window(xdisplay, static_cast<std::uint64_t>(xwindow));
-            return echidna::surface_descriptor_t{
-                .platform_desc = std::make_unique<WGPUSurfaceDescriptorFromXlibWindow>(plat_desc)
-            };
-        }
-    } else if(SDL_strcmp(SDL_GetCurrentVideoDriver(), "wayland") == 0) {
-        auto* display = SDL_GetProperty(
-            SDL_GetWindowProperties(window.handle.get()), SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER, nullptr
-        );
-        auto* surface = SDL_GetProperty(
-            SDL_GetWindowProperties(window.handle.get()), SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER, nullptr
-        );
-
-        if(display != nullptr && surface != nullptr) {
-            auto plat_desc = echidna::surface_descriptor_from_wayland_surface(display, surface);
-            return echidna::surface_descriptor_t{
-                .platform_desc = std::make_unique<WGPUSurfaceDescriptorFromWaylandSurface>(plat_desc)
-            };
-        }
+struct raw_window_visitor {
+    auto operator()(const sdk::x11_window& x11) -> echidna::surface_descriptor_t {
+        auto plat_desc = echidna::surface_descriptor_from_xlib_window(x11.display, x11.window);
+        return echidna::surface_descriptor_t{
+            .platform_desc = std::make_shared<WGPUSurfaceDescriptorFromXlibWindow>(plat_desc)
+        };
     }
-#else
-#error Unimplemented
-#endif
+    auto operator()(const sdk::wayland_window& way) -> echidna::surface_descriptor_t {
+        auto plat_desc = echidna::surface_descriptor_from_wayland_surface(way.display, way.surface);
+        return echidna::surface_descriptor_t{
+            .platform_desc = std::make_shared<WGPUSurfaceDescriptorFromWaylandSurface>(plat_desc)
+        };
+    }
+    auto operator()(const auto& /* unexpected_window */) -> echidna::surface_descriptor_t {
+        throw std::runtime_error("Unimplemented raw window type");
+    }
+};
 
-    return std::unexpected("Unable to create surface descriptor");
+auto surface_descriptor_from_window(const sdk::window& window) -> echidna::surface_descriptor_t {
+    return std::visit(raw_window_visitor{}, window.raw_window_handle);
 }
 
 auto render_context::create(const sdk::window& window) -> std::expected<render_context, std::string> {
@@ -63,10 +46,10 @@ auto render_context::create(const sdk::window& window) -> std::expected<render_c
 
     // Create surface
     auto surf_desc = surface_descriptor_from_window(window);
-    if(!surf_desc) {
+    if(surf_desc.platform_desc == nullptr) {
         return std::unexpected("Unable to create surface descriptor");
     }
-    surface = instance.create_surface(*surf_desc);
+    surface = instance.create_surface(surf_desc);
     if(!surface) {
         return std::unexpected("Unable to create surface");
     }
