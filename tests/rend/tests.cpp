@@ -11,4 +11,10 @@ TEST_CASE("Context creation") {
     auto rnd_ctx = rend::render_context::create(*window);
 
     REQUIRE(rnd_ctx);
+
+    CHECK(rnd_ctx->instance);
+    CHECK(rnd_ctx->surface);
+    CHECK(rnd_ctx->adapter);
+    CHECK(rnd_ctx->device);
+    CHECK(rnd_ctx->queue);
 }
