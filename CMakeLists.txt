@@ -5,6 +5,7 @@ project(chimera)
 add_subdirectory(sdk)
 add_subdirectory(host)
 
+add_subdirectory(plugins/core)
 add_subdirectory(plugins/rend)
 
 include(cmake/package.cmake)

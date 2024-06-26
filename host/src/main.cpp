@@ -21,11 +21,15 @@ auto main() -> int {
     auto context = chimera::sdk::context();
 
     for(const auto& plg: plugins) {
-        plg.on_load(context);
+        if(plg.on_load != nullptr) {
+            plg.on_load(context);
+        }
     }
 
     for(const auto& plg: plugins) {
-        plg.execute(context);
+        if(plg.execute != nullptr) {
+            plg.execute(context);
+        }
     }
 
     auto desc = chimera::sdk::window_desc{};

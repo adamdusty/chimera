@@ -67,17 +67,17 @@ auto load_plugin(const std::filesystem::path& plugin_path) -> std::expected<plug
     auto execute_proc = get_execute_proc(lib_res->get());
     auto unload_proc  = get_on_unload_proc(lib_res->get());
 
-    if(!load_proc || !execute_proc || !unload_proc) {
-        return std::unexpected("Unable to get procedure from library");
-    }
+    // if(!load_proc || !execute_proc || !unload_proc) {
+    //     return std::unexpected("Unable to get procedure from library");
+    // }
 
     return plugin{
         .manifest  = {},
         .handle    = std::move(*lib_res),
         .enabled   = false,
-        .on_load   = *load_proc,
-        .execute   = *execute_proc,
-        .on_unload = *unload_proc,
+        .on_load   = load_proc ? *load_proc : nullptr,
+        .execute   = execute_proc ? *execute_proc : nullptr,
+        .on_unload = unload_proc ? *unload_proc : nullptr,
     };
 }
 
