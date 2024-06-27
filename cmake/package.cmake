@@ -28,3 +28,15 @@ add_custom_command(TARGET package POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "$<TARGET_FILE_DIR:chimera::core>/plugin.json" ${DIR}/plugins/chimera/core/0.1.0
 )
+
+if(WIN32)
+
+add_custom_command(TARGET package POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_RUNTIME_DLLS:chimera_host>
+        $<TARGET_RUNTIME_DLLS:chimera::sdk>
+        ${DIR}
+        COMMAND_EXPAND_LISTS
+)
+
+endif()

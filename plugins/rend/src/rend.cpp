@@ -7,7 +7,7 @@
 // #include <core/core.hpp>
 
 extern "C" {
-CHIMERA_EXPORT auto load(const chimera::sdk::context& ctx) -> void {
+auto load(const chimera::sdk::context& ctx) -> void {
     std::cerr << "Loading rend...\n";
     spdlog::set_level(spdlog::level::info);
     spdlog::info("Loading chimera:rend");
@@ -20,7 +20,7 @@ CHIMERA_EXPORT auto load(const chimera::sdk::context& ctx) -> void {
     spdlog::info("Using functions from other libs: {}", c);
 }
 
-CHIMERA_EXPORT auto execute(const chimera::sdk::context& ctx) -> void {}
+auto execute(const chimera::sdk::context& ctx) -> void {}
 
-CHIMERA_EXPORT auto unload(const chimera::sdk::context& ctx) -> void {}
+auto unload(const chimera::sdk::context& ctx) -> void {}
 }

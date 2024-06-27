@@ -17,6 +17,11 @@ struct CHIMERA_EXPORT wayland_window {
     void* surface = nullptr;
 };
 
-using raw_window = std::variant<std::monostate, x11_window, wayland_window>;
+struct CHIMERA_EXPORT win32_window {
+    void* instance = nullptr;
+    void* hwnd     = nullptr;
+};
+
+using raw_window = std::variant<std::monostate, x11_window, wayland_window, win32_window>;
 
 } // namespace chimera::sdk

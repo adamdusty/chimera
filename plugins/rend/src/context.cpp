@@ -22,8 +22,14 @@ struct raw_window_visitor {
             .platform_desc = std::make_shared<WGPUSurfaceDescriptorFromWaylandSurface>(plat_desc)
         };
     }
+    auto operator()(const sdk::win32_window& win) -> echidna::surface_descriptor_t {
+        auto plat_desc = echidna::surface_descriptor_from_windows_hwnd(win.instance, win.hwnd);
+        return echidna::surface_descriptor_t{
+            .platform_desc = std::make_shared<WGPUSurfaceDescriptorFromWindowsHWND>(plat_desc)
+        };
+    }
     auto operator()(const auto& /* unexpected_window */) -> echidna::surface_descriptor_t {
-        throw std::runtime_error("Unimplemented raw window type");
+        throw std::runtime_error("Cannot build surface descriptor. Window type not implemented.");
     }
 };
 

@@ -34,7 +34,10 @@ auto library_deleter::operator()(library_type* lib) -> void {
 }
 
 auto load_library(const std::filesystem::path& path) -> std::expected<library, std::string_view> {
-    auto* lib = LoadLibrary(path.string().c_str());
+    auto* lib = LoadLibraryEx(
+        path.string().c_str(), nullptr, LOAD_LIBRARY_SEARCH_DEFAULT_DIRS | LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR
+    );
+    // SetDllDirectory(path.parent_path().string().c_str());
     if(lib == nullptr) {
         auto error_code = GetLastError();
         auto msg        = get_error_msg(error_code);
