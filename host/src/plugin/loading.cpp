@@ -52,9 +52,8 @@ auto load_plugins(const fs::path& plugin_dir, const std::vector<plugin_manifest>
         auto bin_path = plugin_dir / man.nspace / man.name / man.plugin_version /
                         std::format("{}.{}", man.executable_name, LIB_EXT);
 
-        std::cerr << bin_path.string() << '\n';
-
         if(auto plg = load_plugin(bin_path)) {
+            spdlog::info("Plugin library loaded: {}:{}", man.nspace, man.name);
             plg->manifest = man;
             plugins.emplace_back(std::move(*plg));
         } else {

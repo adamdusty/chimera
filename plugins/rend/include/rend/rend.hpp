@@ -5,13 +5,7 @@
 #include <chimera/sdk.hpp>
 
 extern "C" {
-auto load(const chimera::sdk::context& ctx) -> void;
-auto execute(const chimera::sdk::context& ctx) -> void;
-auto unload(const chimera::sdk::context& ctx) -> void;
-}
-
-namespace chimera::core {
-
-CHIMERA_EXPORT auto max(int a, int b) -> int;
-
+CHIMERA_EXPORT auto load(const chimera::sdk::context& ctx) -> void;
+CHIMERA_EXPORT auto execute(const chimera::sdk::context& ctx) -> void;
+CHIMERA_EXPORT auto unload(const chimera::sdk::context& ctx) -> void;
 }
