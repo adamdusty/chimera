@@ -6,6 +6,7 @@
 #include <memory>
 #include <spdlog/spdlog.h>
 #include <webgpu.h>
+#include <wgpu.h>
 
 namespace chimera::rend {
 
@@ -45,7 +46,14 @@ auto render_context::create(const sdk::window& window) -> std::expected<render_c
     auto queue    = echidna::queue{};
 
     // Create instance
-    instance = echidna::instance::create();
+    WGPUInstanceExtras inst_extras = {};
+    inst_extras.chain.sType        = static_cast<WGPUSType>(WGPUSType_InstanceExtras);
+    inst_extras.backends           = WGPUInstanceBackend_GL;
+
+    WGPUInstanceDescriptor inst_desc = {};
+    inst_desc.nextInChain            = &inst_extras.chain;
+
+    instance = echidna::instance(inst_desc);
     if(!instance) {
         return std::unexpected("Unable to create instance");
     }
@@ -64,6 +72,9 @@ auto render_context::create(const sdk::window& window) -> std::expected<render_c
     // TODO: Allow user to pass options for adapter
     auto adapter_options = echidna::adapter_options(surface);
     adapter              = instance.request_adapter(adapter_options);
+    if(!adapter) {
+        return std::unexpected("Unable to create adapter");
+    }
 
     // Create device
     // TODO: Determine if caller needs to be able to specify device features

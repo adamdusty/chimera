@@ -4,19 +4,19 @@
 using namespace chimera;
 
 TEST_CASE("Window creation") {
-    auto desc       = sdk::window_desc{};
-    auto window_res = sdk::window::create(desc);
+    auto desc   = sdk::window_create_options{};
+    auto window = sdk::window(desc);
 
-    CHECK(window_res.has_value());
+    CHECK(window.sdl_handle != nullptr);
 }
 
 TEST_CASE("Window size") {
-    auto desc       = sdk::window_desc{};
-    auto window_res = sdk::window::create(desc);
+    auto desc   = sdk::window_create_options{};
+    auto window = sdk::window(desc);
 
-    REQUIRE(window_res);
+    REQUIRE(window.sdl_handle != nullptr);
 
-    auto [w, h] = window_res->size();
+    auto [w, h] = window.size();
 
     CHECK(w == 1920);
     CHECK(h == 1080);

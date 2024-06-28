@@ -12,7 +12,7 @@
 
 namespace chimera::sdk {
 
-enum class window_flags : std::uint64_t {
+enum class CHIMERA_EXPORT window_flags : std::uint64_t {
     none               = 0,
     fullscreen         = SDL_WINDOW_FULLSCREEN,
     opengl             = SDL_WINDOW_OPENGL,
@@ -40,11 +40,19 @@ enum class window_flags : std::uint64_t {
     not_focusable      = SDL_WINDOW_NOT_FOCUSABLE,
 };
 
-struct window_desc {
-    std::string title  = "Chimera";
-    int32_t width      = 1920;
-    int32_t height     = 1080;
-    window_flags flags = window_flags::none;
+enum class gfx_backend {
+    automatic,
+    opengl,
+    vulkan,
+    dx12,
+};
+
+struct CHIMERA_EXPORT window_create_options {
+    std::string title   = "Chimera";
+    int32_t width       = 1920;
+    int32_t height      = 1080;
+    window_flags flags  = window_flags::none;
+    gfx_backend backend = gfx_backend::automatic;
 };
 
 constexpr auto sdl_window_deleter = [](SDL_Window* win) {
@@ -53,15 +61,16 @@ constexpr auto sdl_window_deleter = [](SDL_Window* win) {
     }
 };
 
-class CHIMERA_EXPORT window {
-    window();
-    explicit window(SDL_Window* win);
+struct CHIMERA_EXPORT window {
+    using sdl_win_ptr = std::unique_ptr<SDL_Window, decltype(sdl_window_deleter)>;
 
-public:
-    std::unique_ptr<SDL_Window, decltype(sdl_window_deleter)> sdl_handle = nullptr;
+    sdl_win_ptr sdl_handle = nullptr;
     raw_window raw_window_handle;
 
-    static auto create(const window_desc& desc) -> std::expected<window, std::string>;
+    window();
+    explicit window(SDL_Window* win);
+    explicit window(const window_create_options& wco);
     auto size() const -> std::pair<uint32_t, uint32_t>;
 };
+
 } // namespace chimera::sdk

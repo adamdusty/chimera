@@ -4,6 +4,7 @@ project(
     chimera_sdk
     VERSION 0.1.0
     DESCRIPTION "A short description"
+    LANGUAGES C CXX
 )
 
 # Include utilities

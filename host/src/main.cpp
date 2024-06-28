@@ -21,7 +21,14 @@ auto main() -> int {
     auto manifests      = chimera::load_manifests(manifest_paths);
     auto plugins        = chimera::load_plugins(plugin_dir, manifests);
 
-    auto context = chimera::sdk::context();
+    auto desc = chimera::sdk::window_create_options{
+        .title  = "Chimera",
+        .width  = 640,
+        .height = 480,
+        .flags  = chimera::sdk::window_flags::none,
+    };
+    auto win     = chimera::sdk::window(desc);
+    auto context = chimera::sdk::context(std::move(win));
 
     for(const auto& plg: plugins) {
         if(plg.on_load != nullptr) {
@@ -34,17 +41,6 @@ auto main() -> int {
             plg.execute(context);
         }
     }
-
-    auto desc = chimera::sdk::window_desc{
-        .title  = "Chimera",
-        .width  = 640,
-        .height = 480,
-        .flags  = chimera::sdk::window_flags::none,
-    };
-    auto win = chimera::sdk::window::create(desc);
-
-    SDL_Renderer* rend = SDL_CreateRenderer(win->sdl_handle.get(), nullptr);
-    SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
 
     bool quit = false;
     SDL_Event e;
@@ -63,13 +59,12 @@ auto main() -> int {
             }
         }
 
-        SDL_RenderClear(rend);
-        SDL_RenderPresent(rend);
+        context.world.progress();
+    }
 
-        for(const auto& plg: plugins) {
-            if(plg.execute != nullptr) {
-                plg.execute(context);
-            }
+    for(const auto& plg: plugins) {
+        if(plg.on_unload != nullptr) {
+            plg.on_unload(context);
         }
     }
 

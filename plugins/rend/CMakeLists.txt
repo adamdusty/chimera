@@ -29,6 +29,7 @@ generate_export_header(
 target_sources(chimera_rend PRIVATE
     src/rend.cpp
     src/context.cpp
+    src/systems.cpp
 )
 
 # Add include directory

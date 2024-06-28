@@ -27,15 +27,13 @@ auto get_raw_window_info(SDL_Window* win) -> raw_window {
 window::window() : sdl_handle(nullptr) {}
 window::window(SDL_Window* win) : sdl_handle(win), raw_window_handle(get_raw_window_info(win)) {}
 
-auto window::create(const window_desc& desc) -> std::expected<window, std::string> {
-    auto* window_handle =
-        SDL_CreateWindow(desc.title.c_str(), desc.width, desc.height, static_cast<SDL_WindowFlags>(desc.flags));
+window::window(const window_create_options& wco) {
+    auto* sdl_win = SDL_CreateWindow(wco.title.c_str(), wco.width, wco.height, static_cast<SDL_WindowFlags>(wco.flags));
+    this->sdl_handle.reset(sdl_win);
 
-    if(window_handle == nullptr) {
-        return std::unexpected("Unable to create window");
+    if(sdl_win != nullptr) {
+        this->raw_window_handle = get_raw_window_info(sdl_win);
     }
-
-    return window(window_handle);
 }
 
 auto window::size() const -> std::pair<uint32_t, uint32_t> {
